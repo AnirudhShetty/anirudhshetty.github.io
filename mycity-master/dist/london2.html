@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Homme: You decide. We find</title>
+<meta charset="utf-8" />
+<link
+rel="stylesheet"
+href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
+/>
+
+<script src="mycity.js"></script>
+
+
+</head>
+<body>
+
+<div id="map" style="width: 1000px; height: 400px"></div>
+
+<script
+src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js">
+</script>
+<link rel="stylesheet" href="mycity.css" />
+<script>
+      mycity.run({
+  handleFeatureClick: function(event, oa, lsoa, subLayer, summary, boundaries) {
+    var apiServer = "http://api.datapress.io";
+
+    var resource_ids = {
+      "MyLondonSchoolsCatchmentv2"             : "98ec0962-af1a-49ad-ac10-47606f7794da",
+    }
+
+    Promise.all(
+      [
+        mycity.getFromDataStore(apiServer, 'modelled_OA_rents', 'OA11CD', oa, resource_ids),
+      ]
+    ).then(function(result) {
+      // Replace this with your popup visualisation
+      console.log(result);
+      alert('Data loaded, see console.');
+    });
+  } 
+});
+
+    </script>
+
+
+<script>
+
+/*var southWest = L.latLng(51.2518,-0.5500),
+    northEast = L.latLng(51.7268,0.3028),
+    bounds = L.latLngBounds(southWest, northEast);*/
+
+var map = L.map('map').setView([51.49,-0.14], 11);
+
+//Geo Coder
+
+//map.fitBounds(bounds);
+
+mapLink =
+'<a href="http://openstreetmap.org">OpenStreetMap</a>';
+
+
+//Base Layer
+L.tileLayer(
+'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+attribution: 'Map data &copy; ' + mapLink,
+maxZoom: 22,
+}).addTo(map);
+
+
+// LSOA
+L.tileLayer('https://api.mapbox.com/styles/v1/anirudhs/cioh3tvzy000pdani41bdl6sx/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5pcnVkaHMiLCJhIjoiY2lvZzlnNGY3MDA1d3cxbHhjMnhlM2htOSJ9.Kq70eiOumtOl5iUnjFRJBg',
+{
+  maxZoom: 22,
+  minZoom: 1
+}).addTo(map);
+//Divisions
+
+
+
+
+
+</script>
+</body>
+</html>
